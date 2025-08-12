@@ -87,6 +87,7 @@ instance/
 # Temporary files
 *.tmp
 *.temp
+*.pid
 
 # PyInstaller打包文件
 dist/
