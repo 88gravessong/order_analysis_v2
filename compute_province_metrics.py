@@ -43,6 +43,7 @@ TARGET_COLUMNS = {
     "seller_sku": ["seller sku"],  # 以 Seller SKU 为分组键
     "shipped_time": ["shipped time"],
     "province": ["province"],
+    "created_time": ["created time"],
 }
 
 
@@ -131,7 +132,8 @@ def compute_metrics(file_path: Path):
     sku_totals: Dict[str, int] = defaultdict(int)
 
     total_rows = 0
-    for seller_sku, province, sub, cancel, shipped in read_orders(file_path):
+    # read_orders 返回 6 个值（包含 created_time），此处一并解包，created 暂不使用
+    for seller_sku, province, sub, cancel, shipped, created in read_orders(file_path):
         if seller_sku is None:
             continue  # 跳过无效行
         sku_id = str(seller_sku)
@@ -282,5 +284,4 @@ def main():
 
 if __name__ == "__main__":
     main() 
-
 
