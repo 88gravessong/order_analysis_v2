@@ -71,6 +71,6 @@ echo.
 echo 使用说明:
 echo 1. 将 "订单分析系统.exe" 发送给同事
 echo 2. 同事双击即可运行（无需安装Python）
-echo 3. 程序会自动打开浏览器访问 http://localhost:5000
+echo 3. 程序会自动打开浏览器访问 http://localhost:4004
 echo.
 pause 

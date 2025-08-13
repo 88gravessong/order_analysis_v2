@@ -60,7 +60,7 @@ python app.py
 
 ## 使用方法
 
-1. 访问 `http://localhost:5000`
+1. 访问 `http://localhost:4004`
 2. 上传订单Excel或CSV文件（支持多文件）
 3. 选择日期范围（可选）
 4. 点击"分析订单"或"省份分析"按钮

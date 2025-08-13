@@ -49,7 +49,7 @@ echo -e "${GREEN}[完成] 所有依赖已就绪${NC}"
 # 启动Flask应用
 echo
 echo -e "${YELLOW}[步骤3] 启动Flask服务...${NC}"
-echo -e "${GREEN}服务地址: http://localhost:5000${NC}"
+echo -e "${GREEN}服务地址: http://localhost:4004${NC}"
 echo -e "${YELLOW}按 Ctrl+C 停止服务${NC}"
 echo
 

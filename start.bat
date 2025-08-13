@@ -47,7 +47,7 @@ echo [完成] 所有依赖已就绪
 :: 启动Flask应用
 echo.
 echo [步骤3] 启动Flask服务...
-echo 服务地址: http://localhost:5000
+echo 服务地址: http://localhost:4004
 echo 按 Ctrl+C 停止服务
 echo.
 echo ================================

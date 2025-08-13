@@ -139,12 +139,25 @@
         </div>
     </div>
 {% if province_results %}
-<div class="card mt-5">
+<!-- SKU 过滤控件 -->
+<div class="d-flex justify-content-end mb-2 mt-4">
+    <div class="input-group" style="max-width: 360px;">
+        <span class="input-group-text">Seller SKU</span>
+        <select class="form-select" id="skuFilter">
+            <option value="">全部</option>
+            {% for g in province_results|groupby('seller_sku') %}
+            <option value="{{ g.grouper }}">{{ g.grouper }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="card">
     <div class="card-header bg-info text-white">
         <h5 class="mb-0">省份指标数据</h5>
     </div>
     <div class="table-container">
-        <table class="table table-striped table-hover mb-0">
+        <table class="table table-striped table-hover mb-0" id="provinceTable">
             <thead class="table-dark sticky-top">
                 <tr>
                     <th>序号</th>
@@ -163,7 +176,7 @@
             </thead>
             <tbody>
                 {% for row in province_results %}
-                <tr>
+                <tr data-sku="{{ row.seller_sku }}">
                     <td>{{ loop.index }}</td>
                     <td class="fw-bold">{{ row.seller_sku }}</td>
                     <td>{{ row.province }}</td>
@@ -221,6 +234,36 @@
     </div>
 </div>
 
+<script>
+// 省份表格按 SKU 过滤
+(function() {
+    const skuFilter = document.getElementById('skuFilter');
+    const table = document.getElementById('provinceTable');
+    if (!skuFilter || !table) return;
+
+    function applyFilter() {
+        const val = skuFilter.value;
+        const rows = table.querySelectorAll('tbody tr');
+        let visibleIndex = 0;
+        rows.forEach((tr) => {
+            const rowSku = tr.getAttribute('data-sku');
+            const match = !val || rowSku === val;
+            if (match) {
+                tr.classList.remove('d-none');
+                const indexCell = tr.querySelector('td');
+                if (indexCell) {
+                    visibleIndex += 1;
+                    indexCell.textContent = visibleIndex;
+                }
+            } else {
+                tr.classList.add('d-none');
+            }
+        });
+    }
+
+    skuFilter.addEventListener('change', applyFilter);
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

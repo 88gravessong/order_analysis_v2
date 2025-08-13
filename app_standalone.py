@@ -43,7 +43,7 @@ except ImportError:
 def open_browser():
     """延迟打开浏览器"""
     time.sleep(1.5)  # 等待Flask启动
-    webbrowser.open('http://localhost:5000')
+    webbrowser.open('http://localhost:4004')
 
 
 @app.route("/")
@@ -161,7 +161,7 @@ def download(filename):
 if __name__ == "__main__":
     print("=" * 50)
     print("🚀 订单分析系统正在启动...")
-    print("📊 Web界面地址: http://localhost:5000")
+    print("📊 Web界面地址: http://localhost:4004")
     print("💡 程序会自动打开浏览器")
     print("⚡ 按 Ctrl+C 停止服务")
     print("=" * 50)
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     
     try:
         # 启动Flask应用
-        app.run(host="0.0.0.0", port=5000, debug=False)
+        app.run(host="0.0.0.0", port=4004, debug=False)
     except KeyboardInterrupt:
         print("\n👋 感谢使用订单分析系统！")
     except Exception as e:
