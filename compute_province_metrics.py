@@ -42,7 +42,14 @@ TARGET_COLUMNS = {
     "cancel_type": ["cancelation/return type", "cancellation/return type"],
     "seller_sku": ["seller sku"],  # 以 Seller SKU 为分组键
     "shipped_time": ["shipped time"],
-    "province": ["province"],
+    # 省份/州/城市等地域字段，兼容常见导出列名
+    "province": [
+        "province",            # 省份
+        "state",               # 州/省
+        "province/state",      # 组合列名
+        "state/province",      # 组合列名
+        "province name",       # 省份名称
+    ],
     "created_time": ["created time"],
 }
 
