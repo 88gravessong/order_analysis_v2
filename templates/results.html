@@ -14,34 +14,10 @@
         <a href="/" class="btn btn-outline-secondary">返回首页</a>
     </div>
 
-    <!-- 汇总信息卡片 -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="card-body text-center">
-                    <h3 class="mb-1">{{ total_files }}</h3>
-                    <p class="mb-0">处理文件数</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="card-body text-center">
-                    <h3 class="mb-1">{{ sku_count }}</h3>
-                    <p class="mb-0">SKU 数量</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="card-body text-center">
-                    <h3 class="mb-1">{{ total_orders }}</h3>
-                    <p class="mb-0">总订单数</p>
-                </div>
-            </div>
-        </div>
-		<div class="col-md-3">
-			<div class="card stats-card">
+	<!-- 汇总信息卡片（左：日期筛选；右：综合统计） -->
+	<div class="row mb-4">
+		<div class="col-md-6">
+			<div class="card stats-card h-100">
 				<div class="card-body">
 					<form method="post" action="{{ url_for('process_province') if province_results else url_for('process') }}">
 						<div class="row g-2 align-items-end">
@@ -57,14 +33,34 @@
 								<input type="date" id="end_date" name="end_date" class="form-control form-control-sm" value="{{ end_date.strftime('%Y-%m-%d') if end_date else '' }}" required>
 							</div>
 							<div class="col-12 d-grid mt-1">
-								<button type="submit" class="btn btn-primary btn-sm">筛选并重新计算</button>
+								<button type="submit" class="btn btn-primary btn-sm">重新计算</button>
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-    </div>
+		<div class="col-md-6">
+			<div class="card stats-card h-100">
+				<div class="card-body">
+					<div class="row text-center">
+						<div class="col-4">
+							<h3 class="mb-1">{{ total_files }}</h3>
+							<p class="mb-0">处理文件数</p>
+						</div>
+						<div class="col-4">
+							<h3 class="mb-1">{{ sku_count }}</h3>
+							<p class="mb-0">SKU 数量</p>
+						</div>
+						<div class="col-4">
+							<h3 class="mb-1">{{ total_orders }}</h3>
+							<p class="mb-0">总订单数</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
     <!-- 下载按钮 -->
     <div class="text-center mb-4">
