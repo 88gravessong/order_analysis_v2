@@ -1,0 +1,2 @@
+  main      [m 4259ec2 [[34morigin/main[m] ui: shorten primary action label to 开始计算; change province analysis button color to btn-success
+* [32mrewrite_UI[m 91a424a refactor(ui): 引入克制主题与全局样式，重构 index/results 模板

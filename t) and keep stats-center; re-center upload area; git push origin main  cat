@@ -1,0 +1,2 @@
+[33m52a393b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m style(results): vertically center text inside combined stats card using flex utility
+[33m91a424a[m[33m ([m[1;31morigin/rewrite_UI[m[33m, [m[1;32mrewrite_UI[m[33m)[m refactor(ui): 引入克制主题与全局样式，重构 index/results 模板
