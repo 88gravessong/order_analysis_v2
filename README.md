@@ -27,6 +27,11 @@ start.bat
 ./start.sh
 ```
 
+停止服务（后台启动的情况）：
+```bash
+./stop.sh
+```
+
 启动脚本会自动：
 1. 检查并激活虚拟环境
 2. 安装所需依赖（如果缺失）
@@ -58,6 +63,12 @@ pip install -r requirements.txt
 python app.py
 ```
 
+或使用脚本后台启动/停止：
+```bash
+./start.sh   # 后台启动，写入 app.pid，日志在 app.log
+./stop.sh    # 停止后台进程，清理 app.pid
+```
+
 ## 使用方法
 
 1. 访问 `http://localhost:4004`
@@ -65,6 +76,18 @@ python app.py
 3. 选择日期范围（可选）
 4. 点击"分析订单"或"省份分析"按钮
 5. 查看分析结果并下载Excel报告
+
+## 启动/停止脚本说明
+
+- 启动脚本 `start.sh`：
+  - 自动检测/使用 `.venv` 内的 `python` 与 `pip`（无需 `source activate`）。
+  - 若依赖缺失，自动安装 `requirements.txt`。
+  - 后台启动 Flask，输出到 `app.log`，写入进程号到 `app.pid`。
+- 停止脚本 `stop.sh`：
+  - 读取 `app.pid`，发送 `SIGTERM` 优雅退出，必要时 `SIGKILL` 强制退出。
+  - 成功后删除 `app.pid`。
+
+在 macOS 上可直接运行 `./start.sh` 与 `./stop.sh`（需已安装 `python3`，例如通过 Homebrew: `brew install python`）。
 
 ## 支持的文件格式
 
