@@ -62,11 +62,16 @@
 		</div>
 	</div>
 
-    <!-- 下载按钮 -->
-    <div class="text-center mb-4">
-        <a href="/download/{{ temp_filename }}" class="btn btn-success btn-lg px-4">
-            📥 下载 Excel 文件
+    <!-- 下载按钮 + 省份分析按钮 -->
+    <div class="text-center mb-4 d-flex justify-content-center gap-3">
+        <a href="/download/{{ temp_filename }}" class="btn btn-outline-success btn-lg px-4">
+            下载报表
         </a>
+        <form method="post" action="{{ url_for('process_province') }}">
+            <input type="hidden" name="start_date" value="{{ start_date.strftime('%Y-%m-%d') if start_date else '' }}">
+            <input type="hidden" name="end_date" value="{{ end_date.strftime('%Y-%m-%d') if end_date else '' }}">
+            <button type="submit" class="btn btn-outline-success btn-lg px-4">省份分析</button>
+        </form>
     </div>
 
     <!-- 结果表格 -->
@@ -174,14 +179,30 @@
                     <td class="fw-bold">{{ row.seller_sku }}</td>
                     <td>{{ row.province }}</td>
                     <td>{{ row.total }}</td>
-                    <td>{{ row.share_rate }}</td>
-                    <td>{{ row.sign_rate }}</td>
-                    <td>{{ row.completed_rate }}</td>
-                    <td>{{ row.delivered_rate }}</td>
-                    <td>{{ row.refund_rate }}</td>
-                    <td>{{ row.cancel_before_rate }}</td>
-                    <td>{{ row.cancel_after_rate }}</td>
-                    <td>{{ row.in_transit_rate }}</td>
+                    <td>{{ row.share_rate }}%</td>
+                    <td>
+                        <span class="percentage {% if row.sign_rate >= 80 %}good{% elif row.sign_rate >= 60 %}warning{% else %}danger{% endif %}">
+                            {{ row.sign_rate }}%
+                        </span>
+                    </td>
+                    <td>{{ row.completed_rate }}%</td>
+                    <td>{{ row.delivered_rate }}%</td>
+                    <td>
+                        <span class="percentage {% if row.refund_rate <= 5 %}good{% elif row.refund_rate <= 10 %}warning{% else %}danger{% endif %}">
+                            {{ row.refund_rate }}%
+                        </span>
+                    </td>
+                    <td>
+                        <span class="percentage {% if row.cancel_before_rate <= 5 %}good{% elif row.cancel_before_rate <= 10 %}warning{% else %}danger{% endif %}">
+                            {{ row.cancel_before_rate }}%
+                        </span>
+                    </td>
+                    <td>
+                        <span class="percentage {% if row.cancel_after_rate <= 3 %}good{% elif row.cancel_after_rate <= 8 %}warning{% else %}danger{% endif %}">
+                            {{ row.cancel_after_rate }}%
+                        </span>
+                    </td>
+                    <td><span class="percentage">{{ row.in_transit_rate }}%</span></td>
                 </tr>
                 {% endfor %}
             </tbody>
