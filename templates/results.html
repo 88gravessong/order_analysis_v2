@@ -74,7 +74,8 @@
         </form>
     </div>
 
-    <!-- 结果表格 -->
+    {% if results %}
+    <!-- 结果表格（仅当有 SKU 汇总数据时展示） -->
     <div class="card elevated">
         <div class="card-header">
             <h5 class="mb-0">详细指标数据</h5>
@@ -136,6 +137,7 @@
             </table>
         </div>
     </div>
+    {% endif %}
 {% if province_results %}
 <!-- SKU 过滤控件 -->
 <div class="d-flex justify-content-start mb-2 mt-4">
