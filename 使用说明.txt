@@ -6,15 +6,15 @@
 
 📋 准备工作：
 1. 确保已安装Python 3.7+
-2. 项目文件完整（app_standalone.py, compute_logic.py, templates/）
+2. 项目文件完整（compute_logic.py, templates/）
 
 🚀 一键打包（推荐）：
-1. 双击运行 "quick_build.bat"
+1. 使用 start.sh 启动或按 README 说明运行
 2. 等待打包完成（约2-5分钟）
 3. 在 "./打包结果/" 文件夹中找到 "订单分析系统.exe"
 
 📂 手动打包：
-1. 运行 "build_exe.bat"
+1. 使用 start.sh 启动或按 README 说明运行
 2. 按提示操作
 
 📤 分发给同事：
@@ -51,7 +51,7 @@
 🔧 如果打包失败：
 1. 检查网络连接
 2. 确保虚拟环境正常
-3. 重新运行 quick_build.bat
+3. 使用 start.sh 重启应用
 4. 查看错误信息并解决依赖问题
 
 📞 问题反馈：
