@@ -31,7 +31,6 @@ from werkzeug.utils import secure_filename
 from compute_logic import compute_metrics
 
 from compute_province_metrics import compute_metrics_streams, build_result_workbook as build_province_workbook
-from openpyxl.utils import get_column_letter
 app = Flask(__name__)
 app.secret_key = "secret-key-change-me"
 
@@ -93,50 +92,6 @@ def process():
         if not stats:
             flash("在所选日期范围内未找到符合条件的数据，请调整日期或检查文件！")
             return redirect(url_for("index"))
-        # 追加省份指标为第二个 Sheet
-        prov_stats, sku_totals = compute_metrics_streams(file_streams, start_date, end_date)
-        ws2 = wb.create_sheet(title="省份指标")
-        headers = [
-            "Seller SKU",
-            "Province",
-            "订单数",
-            "订单占比(%)",
-            "签收率(%)",
-            "已完成率(%)",
-            "已送达率(%)",
-            "退款率(%)",
-            "发货前取消率(%)",
-            "发货后取消率(%)",
-            "仍在途率(%)",
-        ]
-        ws2.append(headers)
-        for sku, prov_map in sorted(prov_stats.items(), key=lambda x: x[0]):
-            total_sku = sku_totals.get(sku, 0)
-            for prov, m in sorted(prov_map.items(), key=lambda x: (-x[1]["total"], x[0])):
-                total = m["total"]
-                completed_rate = m.get("completed", 0) / total * 100 if total else 0
-                delivered_rate = m.get("delivered", 0) / total * 100 if total else 0
-                refund_rate = m.get("refund", 0) / total * 100 if total else 0
-                cancel_before_rate = m.get("cancel_before", 0) / total * 100 if total else 0
-                cancel_after_rate = m.get("cancel_after", 0) / total * 100 if total else 0
-                in_transit_rate = m.get("in_transit", 0) / total * 100 if total else 0
-                sign_rate = completed_rate + delivered_rate + refund_rate
-                share_rate = total / total_sku * 100 if total_sku else 0
-                ws2.append([
-                    sku,
-                    prov,
-                    total,
-                    round(share_rate, 2),
-                    round(sign_rate, 2),
-                    round(completed_rate, 2),
-                    round(delivered_rate, 2),
-                    round(refund_rate, 2),
-                    round(cancel_before_rate, 2),
-                    round(cancel_after_rate, 2),
-                    round(in_transit_rate, 2),
-                ])
-        for idx in range(1, len(headers) + 1):
-            ws2.column_dimensions[get_column_letter(idx)].width = 14
     except Exception as e:
         flash(f"处理文件时发生错误: {e}")
         return redirect(url_for("index"))
@@ -231,51 +186,7 @@ def process_province():
         if not stats:
             flash("在所选日期范围内未找到符合条件的数据，请调整日期或检查文件！")
             return redirect(url_for("index"))
-        # 默认指标 sheet
-        wb, _default_stats = compute_metrics(file_streams, start_date, end_date)
-        # 省份指标 sheet
-        ws2 = wb.create_sheet(title="省份指标")
-        headers = [
-            "Seller SKU",
-            "Province",
-            "订单数",
-            "订单占比(%)",
-            "签收率(%)",
-            "已完成率(%)",
-            "已送达率(%)",
-            "退款率(%)",
-            "发货前取消率(%)",
-            "发货后取消率(%)",
-            "仍在途率(%)",
-        ]
-        ws2.append(headers)
-        for sku, prov_map in sorted(stats.items(), key=lambda x: x[0]):
-            total_sku = sku_totals.get(sku, 0)
-            for prov, m in sorted(prov_map.items(), key=lambda x: (-x[1]["total"], x[0])):
-                total = m["total"]
-                completed_rate = m.get("completed", 0) / total * 100 if total else 0
-                delivered_rate = m.get("delivered", 0) / total * 100 if total else 0
-                refund_rate = m.get("refund", 0) / total * 100 if total else 0
-                cancel_before_rate = m.get("cancel_before", 0) / total * 100 if total else 0
-                cancel_after_rate = m.get("cancel_after", 0) / total * 100 if total else 0
-                in_transit_rate = m.get("in_transit", 0) / total * 100 if total else 0
-                sign_rate = completed_rate + delivered_rate + refund_rate
-                share_rate = total / total_sku * 100 if total_sku else 0
-                ws2.append([
-                    sku,
-                    prov,
-                    total,
-                    round(share_rate, 2),
-                    round(sign_rate, 2),
-                    round(completed_rate, 2),
-                    round(delivered_rate, 2),
-                    round(refund_rate, 2),
-                    round(cancel_before_rate, 2),
-                    round(cancel_after_rate, 2),
-                    round(in_transit_rate, 2),
-                ])
-        for idx in range(1, len(headers) + 1):
-            ws2.column_dimensions[get_column_letter(idx)].width = 14
+        wb = build_province_workbook(stats, sku_totals)
     except Exception as e:
         flash(f"处理文件时发生错误: {e}")
         return redirect(url_for("index"))
@@ -323,7 +234,6 @@ def process_province():
         temp_filename=temp_filename,
         total_files=total_files_count,
         total_orders=total_orders,
-        sku_order=[sku for sku, cnt in sorted(sku_totals.items(), key=lambda x: (-x[1], x[0]))],
     )
 @app.route("/download/<filename>")
 def download(filename):
