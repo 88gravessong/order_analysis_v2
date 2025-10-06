@@ -127,14 +127,17 @@ def process():
             'in_transit_rate': round(in_transit_rate, 2),
         })
     
-    return render_template("results.html", 
-                         results=results_data,
-                         sku_count=len(results_data),
-                         start_date=start_date,
-                         end_date=end_date,
-                         temp_filename=temp_filename,
-                         total_files=total_files_count,
-                         total_orders=sum(r['total'] for r in results_data))
+    return render_template(
+        "results.html",
+        results=results_data,
+        sku_count=len(results_data),
+        start_date=start_date,
+        end_date=end_date,
+        temp_filename=temp_filename,
+        total_files=total_files_count,
+        total_orders=sum(r['total'] for r in results_data),
+        sku_options=[],
+    )
 
 
 @app.route("/process_province", methods=["POST"])
@@ -224,6 +227,10 @@ def process_province():
 
     total_orders = sum(r['total'] for r in province_results)
     sku_count = len(stats)
+    sku_options = [
+        sku for sku, _ in sorted(sku_totals.items(), key=lambda x: (-x[1], x[0]))
+    ]
+
     return render_template(
         "results.html",
         province_results=province_results,
@@ -234,6 +241,7 @@ def process_province():
         temp_filename=temp_filename,
         total_files=total_files_count,
         total_orders=total_orders,
+        sku_options=sku_options,
     )
 @app.route("/download/<filename>")
 def download(filename):

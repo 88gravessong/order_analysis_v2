@@ -145,9 +145,15 @@
         <span class="input-group-text">Seller SKU</span>
         <select class="form-select" id="skuFilter">
             <option value="">全部</option>
-            {% for g in province_results|groupby('seller_sku') %}
-            <option value="{{ g.grouper }}">{{ g.grouper }}</option>
-            {% endfor %}
+            {% if sku_options %}
+                {% for sku in sku_options %}
+                <option value="{{ sku }}">{{ sku }}</option>
+                {% endfor %}
+            {% else %}
+                {% for g in province_results|groupby('seller_sku') %}
+                <option value="{{ g.grouper }}">{{ g.grouper }}</option>
+                {% endfor %}
+            {% endif %}
         </select>
     </div>
 </div>
