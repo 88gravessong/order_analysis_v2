@@ -170,7 +170,7 @@ def compute_metrics(file_streams: Iterable[BytesIO], start_date: date, end_date:
 
             completed_set = {"已完成", "completed"}
             delivered_set = {"已送达", "delivered"}
-            canceled_set = {"已取消", "canceled"}
+            canceled_set = {"已取消", "canceled", "cancelled", "cancel"}
             in_transit_set = {"运输中", "in transit"}
 
             if sub_lower in completed_set and cancel_lower == "":
@@ -179,7 +179,7 @@ def compute_metrics(file_streams: Iterable[BytesIO], start_date: date, end_date:
                 s["delivered"] += 1
             elif "return" in sub_lower or "refund" in sub_lower:
                 s["refund"] += 1
-            elif sub_lower in canceled_set:
+            elif sub_lower in canceled_set or cancel_lower in {"canceled", "cancelled", "cancel"}:
                 if shipped_empty:
                     s["cancel_before"] += 1
                 else:
@@ -222,4 +222,4 @@ def compute_metrics(file_streams: Iterable[BytesIO], start_date: date, end_date:
     for idx in range(1, len(headers) + 1):
         ws.column_dimensions[get_column_letter(idx)].width = 14
 
-    return wb, stats 
+    return wb, stats
