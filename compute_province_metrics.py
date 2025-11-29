@@ -156,7 +156,7 @@ def compute_metrics(file_path: Path):
 
         completed_set = {"已完成", "completed"}
         delivered_set = {"已送达", "delivered"}
-        canceled_set = {"已取消", "canceled"}
+        canceled_set = {"已取消", "canceled", "cancelled", "cancel"}
         in_transit_set = {"运输中", "in transit"}
 
         if sub in completed_set and cancel == "":
@@ -165,7 +165,7 @@ def compute_metrics(file_path: Path):
             s["delivered"] += 1
         elif "return" in sub or "refund" in sub:
             s["refund"] += 1
-        elif sub in canceled_set:
+        elif sub in canceled_set or cancel in {"canceled", "cancelled", "cancel"}:
             if shipped_empty:
                 s["cancel_before"] += 1
             else:
@@ -198,7 +198,7 @@ def compute_metrics_streams(file_streams: Iterable[BytesIO], start_date: date, e
             shipped_empty = shipped is None or str(shipped).strip() == ""
             completed_set = {"已完成", "completed"}
             delivered_set = {"已送达", "delivered"}
-            canceled_set = {"已取消", "canceled"}
+            canceled_set = {"已取消", "canceled", "cancelled", "cancel"}
             in_transit_set = {"运输中", "in transit"}
             if sub in completed_set and cancel == "":
                 s["completed"] += 1
@@ -206,7 +206,7 @@ def compute_metrics_streams(file_streams: Iterable[BytesIO], start_date: date, e
                 s["delivered"] += 1
             elif "return" in sub or "refund" in sub:
                 s["refund"] += 1
-            elif sub in canceled_set:
+            elif sub in canceled_set or cancel in {"canceled", "cancelled", "cancel"}:
                 if shipped_empty:
                     s["cancel_before"] += 1
                 else:
