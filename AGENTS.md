@@ -14,6 +14,7 @@ This repository contains a small Flask-based web app for order analytics with Ex
 - Create venv: `python -m venv .venv && source .venv/bin/activate` (Windows: `.venv\Scripts\activate`).
 - Install deps: `pip install -r requirements.txt`.
 - Run app: `bash start.sh` (auto-creates `.venv` and installs deps) or `python app.py`.
+- Always start the app with the `.venv` interpreter (activate it first or call `.venv/bin/python app.py`) so we never fall back to the system Python.
 - Stop app: `bash stop.sh` (uses `app.pid`).
 - Province CLI (optional): `python compute_province_metrics.py` to generate `省份指标分析结果.xlsx`.
 

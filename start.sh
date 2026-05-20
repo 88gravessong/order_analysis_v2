@@ -84,7 +84,8 @@ echo -e "${GREEN}[完成] 依赖已就绪${NC}"
 # 启动 Flask 应用
 echo
 echo -e "${YELLOW}[步骤4] 启动 Flask 服务...${NC}"
-echo -e "${GREEN}服务地址: http://localhost:4004${NC}"
+PORT="${PORT:-4004}"
+echo -e "${GREEN}服务地址: http://localhost:${PORT}${NC}"
 echo -e "${YELLOW}按 Ctrl+C 停止服务${NC}"
 echo
 
